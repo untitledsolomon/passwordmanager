@@ -1,12 +1,32 @@
 // src/components/Sidebar.tsx
 import { useState } from "react";
-import { Home, Settings, Search, Inbox } from "lucide-react";
-import { Link } from "react-router-dom"
+import {
+  Home,
+  Settings,
+  Lock,
+  CreditCard,
+  File,
+  LocationEdit,
+  KeyRound,
+  MapPinHouseIcon,
+  Notebook,
+  ChevronLeft,
+  ChevronRight,
+} from "lucide-react";
+import { NavLink } from "react-router-dom";
 
-const menuItems = [
+const topMenu = [
   { name: "Dashboard", icon: Home, path: "/" },
-  { name: "Inbox", icon: Inbox, path: "/inbox" },
-  { name: "Search", icon: Search, path: "/search" },
+  { name: "All Entries", icon: Lock, path: "/allentries" },
+  { name: "Accounts", icon: MapPinHouseIcon, path: "/accounts" },
+  { name: "Credit Cards", icon: CreditCard, path: "/creditcards" },
+  { name: "Documents", icon: File, path: "/documents" },
+  { name: "Addresses", icon: LocationEdit, path: "/addresses" },
+  { name: "Notes", icon: Notebook, path: "/notes" },
+];
+
+const footerMenu = [
+  { name: "Password Generator", icon: KeyRound, path: "/password-generator" },
   { name: "Settings", icon: Settings, path: "/settings" },
 ];
 
@@ -15,30 +35,57 @@ export default function Sidebar() {
 
   return (
     <aside
-      className={`bg-white border-r transition-all duration-300 ${
+      className={`h-screen bg-[#1E1F22] border-r border-gray-700 transition-all duration-300 ${
         open ? "w-64" : "w-16"
       } flex flex-col`}
     >
-      <div className="p-4 font-bold flex justify-between items-center border-b">
-        {open && "Sidebar"}
+      {/* Header */}
+      <div className="p-4 font-bold flex justify-between items-center border-b text-white">
+        {open && <span className="text-lg">SaaS</span>}
         <button
-          className="text-gray-500"
+          className="text-white p-1 rounded hover:bg-gray-700 transition"
           onClick={() => setOpen(!open)}
         >
-          {open ? "<" : ">"}
+          {open ? <ChevronLeft /> : <ChevronRight />}
         </button>
       </div>
 
-      <nav className="flex-1 mt-4">
-        {menuItems.map((item) => (
-          <Link key={item.name} to={item.path} className="flex items-center gap-2 p-2 hover:bg-gray-100 cursor-pointer">
-            <item.icon />
-            {open && <span>{item.name}</span>}
-          </Link>
+      {/* Top Menu (scrollable if content overflows) */}
+      <nav className="flex-1 overflow-y-auto p-2 flex flex-col gap-1">
+        {topMenu.map((item) => (
+          <NavLink
+            key={item.name}
+            to={item.path}
+            end
+            className={({ isActive }) =>
+              `flex items-center gap-3 p-2 rounded hover:bg-gray-700 transition ${
+                isActive ? "bg-red-500" : "bg-transparent"
+              }`
+            }
+          >
+            <item.icon className="w-5 h-5" />
+            {open && <span className="truncate">{item.name}</span>}
+          </NavLink>
         ))}
       </nav>
 
-      <div className="p-4 border-t">{open && "Footer"}</div>
+      {/* Footer Menu (always visible) */}
+      <div className="p-2 border-t border-gray-700 flex flex-col gap-1">
+        {footerMenu.map((item) => (
+          <NavLink
+            key={item.name}
+            to={item.path}
+            className={({ isActive }) =>
+              `flex items-center gap-3 p-2 rounded hover:bg-gray-700 transition ${
+                isActive ? "bg-red-500" : "bg-transparent"
+              }`
+            }
+          >
+            <item.icon className="w-5 h-5" />
+            {open && <span className="truncate">{item.name}</span>}
+          </NavLink>
+        ))}
+      </div>
     </aside>
   );
 }
