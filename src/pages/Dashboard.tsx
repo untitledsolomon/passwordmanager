@@ -4,7 +4,7 @@ export default function DashboardLayout() {
   const metrics = [
     { label: "Saved Passwords", value: 28, icon: <Lock />, gradient: "from-red-600 to-red-500" },
     { label: "Strong", value: 18, icon: <Key />, gradient: "from-green-500 to-green-400" },
-    { label: "Weak", value: 7, icon: <Lock />, gradient: "from-yellow-400 to-yellow-300" },
+    { label: "Weak", value: 7, icon: <Lock />, gradient: "from-orange-400 to-orange-300" },
     { label: "Duplicate", value: 3, icon: <File />, gradient: "from-gray-500 to-gray-400" },
   ];
 
@@ -87,7 +87,7 @@ export default function DashboardLayout() {
           {quickActions.map((action, idx) => (
             <button
               key={idx}
-              className="p-5 bg-[#1A1B1E] rounded-2xl shadow-md hover:shadow-lg hover:bg-[#2E2F33] transition flex flex-col items-center justify-center gap-2 text-sm transform hover:scale-105"
+              className="p-5 bg-[#1A1B1E] rounded-2xl shadow-md hover:shadow-lg hover:bg-[#2E2F33] transition flex flex-col items-center justify-center gap-2 text-sm transform hover:scale-105 cursor-pointer"
             >
               <div className="text-red-500 text-3xl">{action.icon}</div>
               <div className="text-white font-medium">{action.name}</div>

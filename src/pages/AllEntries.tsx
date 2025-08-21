@@ -1,5 +1,7 @@
 import { PageLayout } from "../components/PageLayout";
 import { Lock } from "lucide-react";
+import Pagination  from "../components/Pagination";
+import { usePagination } from "../ts/usePagination"
 
 const allEntries = Array(20).fill({
   name: "Spotify",
@@ -8,6 +10,9 @@ const allEntries = Array(20).fill({
 });
 
 export default function AllEntries() {
+  const { currentItems, currentPage, totalPages, goToPage } = usePagination(allEntries, 12)
+
+
   return (
     <PageLayout title="All Entries">
       <div className="bg-[#1E1F22] rounded-xl shadow-md p-4 overflow-x-auto">
@@ -20,7 +25,7 @@ export default function AllEntries() {
             </tr>
           </thead>
           <tbody>
-            {allEntries.map((entry, idx) => (
+            {currentItems.map((entry, idx) => (
               <tr
                 key={idx}
                 className="bg-[#2A2B2F] rounded-xl hover:bg-[#3A3B3F] transition-colors cursor-pointer"
@@ -33,6 +38,11 @@ export default function AllEntries() {
           </tbody>
         </table>
       </div>
+      <Pagination
+        currentPage={currentPage}
+        totalPages={totalPages}
+        goToPage={goToPage}
+      />
     </PageLayout>
   );
 }
