@@ -4,6 +4,7 @@ import Pagination  from "../components/Pagination";
 import { usePagination } from "../ts/usePagination"
 import Popup from "../components/popup";
 import { useState } from "react";
+import { useToast } from "../components/ToastProvider";
 
 const allEntries = Array(50).fill({
   name: "Spotify",
@@ -23,6 +24,15 @@ export default function AllEntries() {
     setSelectedEntry(entry);
     setIsOpen(true);
   };
+
+  const [showPassword, setShowPassword] = useState(false);
+  
+  const { showToast } = useToast();
+
+  const handleCopy = (e: React.MouseEvent<HTMLButtonElement>, text:string) => {
+    navigator.clipboard.writeText(text);
+    showToast("Copied", e.currentTarget);
+  }
 
   return (
     <PageLayout title="All Entries">
@@ -85,7 +95,12 @@ export default function AllEntries() {
                   {selectedEntry.email}
                 </p>
               </div>
-              <Clipboard className="p-2 rounded-lg size-9 cursor-pointer transition-all hover:bg-red-500 hover:text-white" />
+              <button
+                className="p-2 rounded-lg size-9 cursor-pointer transition-all hover:bg-red-500 hover:text-white"
+                onClick={(e) => handleCopy(e, selectedEntry.email)}
+              >
+                <Clipboard className="w-full h-full" />
+              </button>
             </div>
 
             {/* Password */}
@@ -95,12 +110,27 @@ export default function AllEntries() {
                   Password
                 </h3>
                 <p className="text-base font-medium text-gray-900 dark:text-gray-100">
-                  {selectedEntry.password}
+                  {showPassword ? selectedEntry?.password : "****************************"}
                 </p>
               </div>
               <div className="flex">
-                <Eye className="p-2 rounded-lg size-9 cursor-pointer transition-all hover:bg-red-500 hover:text-white" />
-                <Clipboard className="p-2 rounded-lg size-9 cursor-pointer transition-all hover:bg-red-500 hover:text-white" />
+                <button
+                  className="p-2 rounded-lg size-9 cursor-pointer transition-all hover:bg-red-500 hover:text-white"
+                  onClick={() => setShowPassword(!showPassword)}
+                >
+                  {showPassword ? (
+                    <EyeOff className="w-full h-full" />
+                  ) : (
+                    <Eye className="w-full h-full" />
+                  )}
+                </button>
+
+                <button
+                  className="p-2 rounded-lg size-9 cursor-pointer transition-all hover:bg-red-500 hover:text-white"
+                  onClick={(e) => handleCopy(e, selectedEntry.password)}
+                >
+                  <Clipboard className="w-full h-full" />
+                </button>
               </div>
             </div>
 
