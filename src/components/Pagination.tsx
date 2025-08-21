@@ -1,5 +1,3 @@
-import React from "react";
-
 interface PaginationProps {
     currentPage: number;
     totalPages: number;
@@ -16,25 +14,30 @@ export default function Pagination({
             <button 
                 onClick={() => goToPage(currentPage - 1)}
                 disabled={currentPage === 1}
-                className="px-3 py-1 border rounded disabled:opacity-50 disabled:cursor-default cursor-pointer hover:bg-red-500 disabled:bg-background"
+                className="px-3 py-1 border rounded disabled:opacity-50 disabled:cursor-default cursor-pointer hover:bg-gray-700 disabled:bg-background"
             >
                 Prev
             </button>
 
-            {[...Array(totalPages)].map((_, i) => (
-                <button
-                    key={i}
-                    onClick={() => goToPage(i + 1)}
-                    className={"px-3 py-1 border rounded cursor-pointer hover:bg-red-500 ${ currentPage === i + 1 ? 'bg-red-500 text-white' : '' }"}
-                >
-                    {i + 1}
-                </button>
-            ))}
+            {[...Array(totalPages)].map((_, i) => {
+                const page = i + 1;
+                const isActive = page === currentPage
+
+                return(
+                    <button
+                    key={page}
+                    onClick={() => goToPage(page)}
+                    className={`px-3 py-1 border rounded transition-colors cursor-pointer hover:bg-gray-700 ${ isActive ? 'bg-red-500 text-white' : '' }`}
+                    >
+                        {page}
+                    </button>
+                );
+            })}
 
             <button
                 onClick={() => goToPage(currentPage + 1)}
                 disabled={currentPage === totalPages}
-                className="px-3 py-1 border rounded disabled:opacity-50 disabled:cursor-default cursor-pointer hover:bg-red-500 disabled:bg-background"
+                className="px-3 py-1 border rounded disabled:opacity-50 disabled:cursor-default cursor-pointer hover:bg-gray-700 disabled:bg-background"
             >
                 Next
             </button>

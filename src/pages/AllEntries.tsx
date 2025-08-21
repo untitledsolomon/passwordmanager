@@ -3,7 +3,7 @@ import { Lock } from "lucide-react";
 import Pagination  from "../components/Pagination";
 import { usePagination } from "../ts/usePagination"
 
-const allEntries = Array(20).fill({
+const allEntries = Array(50).fill({
   name: "Spotify",
   email: "thisisatestemail@gmail.com",
   icon: <Lock />,
