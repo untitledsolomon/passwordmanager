@@ -5,7 +5,7 @@ interface PageLayoutProps {
 
 export function PageLayout({ title, children }: PageLayoutProps) {
   return (
-    <div className="flex flex-col h-full p-6 space-y-8 bg-[#121212] text-white">
+    <div className="flex flex-col h-full p-6 space-y-8 bg-background text-white">
       <div className="flex justify-between items-center">
         <h1 className="text-3xl md:text-4xl font-bold text-red-500">{title}</h1>
         {/* Optional top actions */}
