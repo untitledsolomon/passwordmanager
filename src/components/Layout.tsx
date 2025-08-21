@@ -8,9 +8,9 @@ interface LayoutProps {
 
 export default function Layout({ children }: LayoutProps) {
   return (
-    <div className="flex h-screen bg-[var(--background)] overflow-hidden">
+    <div className="flex h-screen bg-gradient-to-br from-[#16171A] to-[#0F1012]">
       <Sidebar />
-      <main className="flex-1 p-6">{children}</main>
+      <main className="flex-1 pl-6 pr-6">{children}</main>
     </div>
   );
 }

@@ -4,7 +4,6 @@ import {
   Home,
   Settings,
   Lock,
-  CreditCard,
   File,
   LocationEdit,
   KeyRound,
@@ -20,7 +19,6 @@ const topMenu = [
   { name: "Dashboard", icon: Home, path: "/" },
   { name: "All Entries", icon: Lock, path: "/allentries" },
   { name: "Accounts", icon: MapPinHouseIcon, path: "/accounts" },
-  { name: "Credit Cards", icon: CreditCard, path: "/creditcards" },
   { name: "Documents", icon: File, path: "/documents" },
   { name: "Addresses", icon: LocationEdit, path: "/addresses" },
   { name: "Notes", icon: Notebook, path: "/notes" },
@@ -43,25 +41,23 @@ export default function Sidebar() {
     }
   };
 
-  const handleMouseLeave = () => {
-    setHoveredItem(null);
-  };
+  const handleMouseLeave = () => setHoveredItem(null);
 
-  const collapsedWidth = 64; // collapsed sidebar width in px
+  const collapsedWidth = 64; // px
 
   return (
     <>
       <aside
         ref={sidebarRef}
-        className={`h-screen bg-[#1E1F22] border-r border-gray-700 transition-all duration-300 ${
-          open ? "w-64" : "w-16"
-        } flex flex-col`}
+        className={`h-screen backdrop-blur-md bg-[#1E1F22]/80 border-r border-gray-800/60 flex flex-col transition-width duration-300 ease-in-out ${
+          open ? "w-64" : "w-20"
+        } shadow-lg`}
       >
         {/* Header */}
-        <div className="p-4 font-bold flex justify-between items-center border-b text-white">
-          {open && <span className="text-lg">SaaS</span>}
+        <div className="p-4 font-bold flex justify-between items-center border-b border-gray-800/50 text-white">
+          {open && <span className="text-lg tracking-tight">SaaS</span>}
           <button
-            className="text-white p-1 rounded hover:bg-gray-700 transition"
+            className="text-gray-300 p-2 rounded-lg hover:bg-gray-700/40 transition"
             onClick={() => setOpen(!open)}
           >
             {open ? <ChevronLeft /> : <ChevronRight />}
@@ -69,7 +65,7 @@ export default function Sidebar() {
         </div>
 
         {/* Top Menu */}
-        <nav className="flex-1 overflow-y-auto p-2 flex flex-col gap-1">
+        <nav className="flex-1 overflow-y-auto p-3 flex flex-col gap-2 scrollbar-thin scrollbar-thumb-gray-700/40">
           {topMenu.map((item) => (
             <div
               key={item.name}
@@ -81,20 +77,23 @@ export default function Sidebar() {
                 to={item.path}
                 end
                 className={({ isActive }) =>
-                  `flex items-center gap-3 p-2 rounded hover:bg-gray-700 transition ${
-                    isActive ? "bg-red-500" : "bg-transparent"
+                  `flex items-center gap-3 px-3 py-2 rounded-xl transition-all duration-300
+                  ${
+                    isActive
+                      ? "bg-gradient-to-r from-red-500/20 to-purple-500/20 text-white shadow-md"
+                      : "hover:bg-gradient-to-r hover:from-red-500/20 hover:to-red-700/20 text-gray-300 hover:text-white"
                   }`
                 }
               >
-                <item.icon className="w-5 h-5" />
-                {open && <span className="truncate">{item.name}</span>}
+                <item.icon className={`w-5 h-5 self-center ${open ? "text-white" : "text-white"}`} />
+                {open && <span className="truncate font-medium">{item.name}</span>}
               </NavLink>
             </div>
           ))}
         </nav>
 
         {/* Footer Menu */}
-        <div className="p-2 border-t border-gray-700 flex flex-col gap-1">
+        <div className="p-3 border-t border-gray-800/50 flex flex-col gap-2">
           {footerMenu.map((item) => (
             <div
               key={item.name}
@@ -105,24 +104,27 @@ export default function Sidebar() {
               <NavLink
                 to={item.path}
                 className={({ isActive }) =>
-                  `flex items-center gap-3 p-2 rounded hover:bg-gray-700 transition ${
-                    isActive ? "bg-red-500" : "bg-transparent"
+                  `flex items-center gap-3 px-3 py-2 rounded-xl transition-all duration-300
+                  ${
+                    isActive
+                      ? "bg-gradient-to-r from-red-500/20 to-purple-500/20 text-white shadow-md"
+                      : "hover:bg-gradient-to-r hover:from-red-500/20 hover:to-red-700/20 text-gray-300 hover:text-white"
                   }`
                 }
               >
-                <item.icon className="w-5 h-5" />
-                {open && <span className="truncate">{item.name}</span>}
+                <item.icon className={`w-5 h-5 self-center ${open ? "text-white" : "text-white"}`} />
+                {open && <span className="truncate font-medium">{item.name}</span>}
               </NavLink>
             </div>
           ))}
         </div>
       </aside>
 
-      {/* Tooltip Portal */}
+      {/* Tooltip */}
       {!open && hoveredItem &&
         createPortal(
           <div
-            className="bg-gray-800 text-white text-sm rounded px-2 py-1 z-50 pointer-events-none transition-opacity opacity-100"
+            className="bg-[#1E1F22]/80 backdrop-blur-md text-white text-sm rounded-xl px-3 py-1 shadow-lg z-50 pointer-events-none transition-opacity opacity-100 border border-white/10"
             style={{
               position: "fixed",
               top: hoveredItem.top,

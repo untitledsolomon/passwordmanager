@@ -43,7 +43,7 @@ export function ToastProvider({ children }: { children: ReactNode }) {
                             <div
                                 key={toast.id}
                                 style={style}
-                                className="absolute -translate-x-1/2 bg-gray-900 text-white text-sm px-3 py-1.5 rounded-lg shadow-md whitespace-nowrap animate-fade-in-out"
+                                className="absolute -translate-x-1/2 bg-[#2C2D34] text-white text-sm px-3 py-1.5 rounded-lg shadow-md whitespace-nowrap animate-fade-in-out border border-white/10"
                             >
                                 {toast.message}
                             </div>

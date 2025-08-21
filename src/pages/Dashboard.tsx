@@ -1,11 +1,12 @@
-import { Lock, CreditCard, File, MapPinHouseIcon, Key, Bell } from "lucide-react";
+import { Lock, CreditCard, File, MapPinHouseIcon, Key } from "lucide-react";
+import { PageLayout } from "../components/PageLayout";
 
 export default function DashboardLayout() {
   const metrics = [
-    { label: "Saved Passwords", value: 28, icon: <Lock />, gradient: "from-red-600 to-red-500" },
-    { label: "Strong", value: 18, icon: <Key />, gradient: "from-green-500 to-green-400" },
-    { label: "Weak", value: 7, icon: <Lock />, gradient: "from-orange-400 to-orange-300" },
-    { label: "Duplicate", value: 3, icon: <File />, gradient: "from-gray-500 to-gray-400" },
+    { label: "Saved Passwords", value: 28, icon: <Lock className="w-5 h-5" />, accent: "from-red-500 to-indigo-500" },
+    { label: "Strong", value: 18, icon: <Key className="w-5 h-5" />, accent: "from-green-500 to-teal-500" },
+    { label: "Weak", value: 7, icon: <Lock className="w-5 h-5" />, accent: "from-yellow-400 to-orange-400" },
+    { label: "Duplicate", value: 3, icon: <File className="w-5 h-5" />, accent: "from-purple-500 to-pink-500" },
   ];
 
   const recentEntries = [
@@ -23,59 +24,51 @@ export default function DashboardLayout() {
   ];
 
   return (
-    <div className="flex h-screen bg-background text-white font-sans">
-      <main className="flex-1 p-6 overflow-y-auto space-y-10">
-        {/* Top Bar */}
-        <div className="flex justify-between items-center mb-8">
-          <h1 className="text-4xl font-extrabold text-red-500 tracking-wide">Dashboard</h1>
-          <div className="flex items-center gap-4">
-            <input
-              type="text"
-              placeholder="Search entries..."
-              className="rounded-full px-5 py-2 bg-[#1A1B1E] border border-gray-700 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-red-500 transition"
-            />
-            <Bell className="text-gray-400 hover:text-red-500 transition cursor-pointer" />
-            <div className="flex items-center gap-2 cursor-pointer">
-              <div className="w-10 h-10 rounded-full bg-red-500 flex items-center justify-center font-bold text-lg shadow-md">U</div>
-              <span className="hidden md:inline font-medium text-gray-200">User</span>
-            </div>
-          </div>
-        </div>
+    <PageLayout title="Dashboard">
+      <main className="flex-1 p-6 space-y-10">
 
         {/* Metrics */}
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-6">
           {metrics.map((m, idx) => (
             <div
               key={idx}
-              className={`p-5 rounded-2xl shadow-lg bg-gradient-to-br ${m.gradient} flex flex-col items-center justify-center transition-transform transform hover:scale-105`}
+              className="p-5 rounded-2xl shadow-lg bg-[#1E1F22]/80 backdrop-blur-md border border-white/10
+                         flex flex-col items-center justify-center gap-2 cursor-pointer
+                         hover:shadow-2xl hover:scale-[1.03] transition"
             >
-              <div className="w-12 h-12 rounded-full bg-black/20 flex items-center justify-center mb-3 text-white text-xl">{m.icon}</div>
-              <div className="text-2xl font-semibold">{m.value}</div>
-              <div className="text-gray-300 mt-1 text-sm">{m.label}</div>
+              <div className={`w-12 h-12 rounded-xl bg-gradient-to-r ${m.accent} flex items-center justify-center text-white shadow-md`}>
+                {m.icon}
+              </div>
+              <div className="text-xl font-semibold text-white">{m.value}</div>
+              <div className="text-gray-400 text-sm">{m.label}</div>
             </div>
           ))}
         </div>
 
         {/* Recent Entries */}
-        <div className="bg-[#1A1B1E] rounded-2xl shadow-lg p-6 overflow-x-auto">
-          <h2 className="text-red-500 font-semibold text-xl mb-4">Recent Entries</h2>
-          <table className="w-full text-left table-auto border-separate border-spacing-y-2">
+        <div className="bg-[#1E1F22]/80 backdrop-blur-md rounded-2xl shadow-lg p-6 border border-white/10">
+          <h2 className="text-white font-semibold text-xl mb-4">Recent Entries</h2>
+          <table className="w-full text-left border-separate border-spacing-y-2">
             <thead>
-              <tr className="text-gray-400 uppercase text-sm">
+              <tr className="text-gray-400 text-sm">
                 <th className="px-4 py-2">Service</th>
                 <th className="px-4 py-2">Email</th>
-                <th className="px-4 py-2">Icon</th>
+                <th className="px-4 py-2 text-center">Icon</th>
               </tr>
             </thead>
             <tbody>
               {recentEntries.map((entry, idx) => (
                 <tr
                   key={idx}
-                  className="bg-[#232427] rounded-xl hover:bg-[#2E2F33] transition-colors cursor-pointer shadow-sm"
+                  className="bg-[#232427]/80 rounded-xl hover:bg-[#2A2B2F]/80 transition cursor-pointer"
                 >
-                  <td className="px-4 py-3 font-medium">{entry.name}</td>
-                  <td className="px-4 py-3 text-gray-300 truncate">{entry.email}</td>
-                  <td className="px-4 py-3">{entry.icon}</td>
+                  <td className="px-4 py-3 font-medium text-white">{entry.name}</td>
+                  <td className="px-4 py-3 text-gray-400 truncate">{entry.email}</td>
+                  <td className="px-4 py-3 flex justify-center">
+                    <div className="w-10 h-10 rounded-xl bg-indigo-500/30 flex items-center justify-center text-white shadow-md">
+                      {entry.icon}
+                    </div>
+                  </td>
                 </tr>
               ))}
             </tbody>
@@ -87,14 +80,16 @@ export default function DashboardLayout() {
           {quickActions.map((action, idx) => (
             <button
               key={idx}
-              className="p-5 bg-[#1A1B1E] rounded-2xl shadow-md hover:shadow-lg hover:bg-[#2E2F33] transition flex flex-col items-center justify-center gap-2 text-sm transform hover:scale-105 cursor-pointer"
+              className="p-4 rounded-2xl shadow-lg bg-[#1E1F22]/80 backdrop-blur-md border border-white/10
+                         hover:shadow-2xl hover:border-indigo-400/30 transition flex flex-col items-center justify-center gap-2"
             >
-              <div className="text-red-500 text-3xl">{action.icon}</div>
+              <div className="text-white">{action.icon}</div>
               <div className="text-white font-medium">{action.name}</div>
             </button>
           ))}
         </div>
+
       </main>
-    </div>
+    </PageLayout>
   );
 }
