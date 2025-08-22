@@ -1,21 +1,16 @@
 import { PageLayout } from "../components/PageLayout";
-import { Lock, Eye, EyeOff, Clipboard, SquareArrowOutUpRight } from "lucide-react";
+import { Lock, Eye, EyeOff, Clipboard, SquareArrowOutUpRight, type LucideProps } from "lucide-react";
 import Pagination from "../components/Pagination";
 import { usePagination } from "../ts/usePagination";
-import Popup from "../components/popup";
-import { useState } from "react";
+import Popup from "../components/Popup";
+import { useEffect, useState } from "react";
 import { useToast } from "../components/ToastProvider";
-
-const allEntries = Array(50).fill({
-  name: "Spotify",
-  email: "thisisatestemail@gmail.com",
-  icon: <Lock />,
-  password: "thisisthepassword",
-  notes: "This is just a test note to show if the notes system works or not.",
-});
+import { usePassowrds } from "../components/PasswordManager";
 
 export default function AllEntries() {
-  const { currentItems, currentPage, totalPages, goToPage } = usePagination(allEntries, 7);
+  const {passwords, deletePassword, addPassword} = usePassowrds();
+  
+  const { currentItems, currentPage, totalPages, goToPage } = usePagination(passwords, 7);
   const [isOpen, setIsOpen] = useState(false);
   const [selectedEntry, setSelectedEntry] = useState<any>(null);
   const [showPassword, setShowPassword] = useState(false);
@@ -31,10 +26,36 @@ export default function AllEntries() {
     showToast("Copied", e.currentTarget);
   };
 
+  const handleDelete = (e: React.MouseEvent<HTMLButtonElement>, passwordId: number) => {
+    deletePassword(passwordId)
+    showToast("Deleted", e.currentTarget)
+    setIsOpen(false)
+  }
+
+  const newEntry = {
+      id: Date.now(),
+      name: "example.com",
+      email: "Example password",
+      password: "thisIsAnExamplePassword",
+      notes: "this is an example note for an example password",
+      icon: "Lock"
+  };
+
+  const iconMap: Record<string, React.ReactNode> = {
+    Lock: < Lock />
+  }
+
   return (
     <PageLayout title="All Entries">
       {/* Entries Table */}
       <div className="bg-[#1E1F22]/80 backdrop-blur-md rounded-2xl shadow-md p-6 border border-white/10 mb-6">
+        <button
+          onClick={() => addPassword(newEntry)}
+          className="px-6 py-2.5 bg-gradient-to-r from-red-500 to-red-600 text-white rounded-xl font-medium shadow-sm hover:from-red-600 hover:to-red-700 transition cursor-pointer"
+        >
+          Add Password
+        </button>
+
         <table className="w-full border-separate border-spacing-y-3 text-left">
           <thead>
             <tr className="text-gray-400 uppercase text-xs tracking-wider">
@@ -53,8 +74,8 @@ export default function AllEntries() {
                 <td className="px-6 py-4 font-medium text-white">{entry.name}</td>
                 <td className="px-6 py-4 text-gray-400 truncate max-w-xs">{entry.email}</td>
                 <td className="px-6 py-4 flex justify-center">
-                  <div className="w-10 h-10 rounded-xl bg-gradient-to-r from-red-500 to-indigo-500 flex items-center justify-center text-white shadow-md">
-                    {entry.icon}
+                  <div className="w-10 h-10 rounded-xl bg-gradient-to-r from-red-500/20 to-indigo-500/20 flex items-center justify-center text-white shadow-md">
+                    {iconMap[entry.icon]}
                   </div>
                 </td>
               </tr>
@@ -74,12 +95,12 @@ export default function AllEntries() {
             {/* Header */}
             <div className="flex justify-between items-center border-b border-gray-800 pb-4">
               <div className="flex gap-4 items-center">
-                <div className="w-16 h-16 rounded-xl bg-gradient-to-r from-red-500 to-indigo-500 flex items-center justify-center text-white shadow-md">
-                  {selectedEntry.icon}
+                <div className="w-16 h-16 rounded-xl bg-gradient-to-r from-red-500/20 to-indigo-500/20 flex items-center justify-center text-white shadow-md">
+                  {iconMap[selectedEntry.icon]}
                 </div>
                 <h2 className="text-2xl font-bold text-white truncate">{selectedEntry.name}</h2>
               </div>
-              <SquareArrowOutUpRight className="w-10 h-10 p-2 rounded-lg cursor-pointer text-gray-400 transition hover:bg-[#2A2C2F]" />
+              <SquareArrowOutUpRight className="w-10 h-10 p-2 rounded-lg cursor-pointer text-gray-400 transition hover:bg-[#1E1F22]" />
             </div>
 
             {/* Email */}
@@ -124,11 +145,17 @@ export default function AllEntries() {
               <p className="text-white font-medium">{selectedEntry.notes}</p>
             </div>
 
-            {/* Close Button */}
-            <div className="flex justify-end">
+            {/* Action Buttons */}
+            <div className="flex justify-end gap-2">
+              <button 
+                onClick={(e) => handleDelete(e, selectedEntry.id)}
+                className="px-6 py-2.5 bg-gradient-to-r from-red-500 to-red-600 text-white rounded-xl font-medium shadow-sm hover:from-red-600/20 hover:to-red-700/20 transition cursor-pointer"
+              >
+                Delete
+              </button>
               <button
                 onClick={() => setIsOpen(false)}
-                className="px-6 py-2.5 bg-gradient-to-r from-red-500 to-red-600 text-white rounded-xl font-medium shadow-sm hover:from-red-600 hover:to-red-700 transition cursor-pointer"
+                className="px-6 py-2.5 bg-gradient-to-r from-red-500 to-red-600 text-white rounded-xl font-medium shadow-sm hover:from-red-600/20 hover:to-red-700/20 transition cursor-pointer"
               >
                 Close
               </button>

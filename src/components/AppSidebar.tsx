@@ -55,7 +55,7 @@ export default function Sidebar() {
       >
         {/* Header */}
         <div className="p-4 font-bold flex justify-between items-center border-b border-gray-800/50 text-white">
-          {open && <span className="text-lg tracking-tight">SaaS</span>}
+          {open && <span className="text-lg tracking-tight">Password Manager</span>}
           <button
             className="text-gray-300 p-2 rounded-lg hover:bg-gray-700/40 transition"
             onClick={() => setOpen(!open)}

@@ -1,7 +1,7 @@
 import { PageLayout } from "../components/PageLayout";
 import { MapPinHouseIcon, CreditCard as CreditCardIcon, PlusIcon, ArrowRight } from "lucide-react";
 import { useState } from "react";
-import Popup from "../components/popup";
+import Popup from "../components/Popup";
 
 const accounts = [
   { name: "Main Checking", balance: "$2,340", status: "Active", type: "Checking", lastTransaction: "Aug 18, 2025" },

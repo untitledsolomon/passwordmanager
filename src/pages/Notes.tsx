@@ -1,7 +1,7 @@
 import { PageLayout } from "../components/PageLayout";
 import { Notebook, PlusIcon, ArrowRight } from "lucide-react";
 import { useState } from "react";
-import Popup from "../components/popup";
+import Popup from "../components/Popup";
 
 const notes = [
   { title: "Meeting Notes", content: "Discuss project timeline..." },

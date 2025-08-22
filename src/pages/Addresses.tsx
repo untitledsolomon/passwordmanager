@@ -1,7 +1,7 @@
 import { PageLayout } from "../components/PageLayout";
 import { MapPinHouseIcon, PlusIcon, ArrowRight } from "lucide-react";
 import { useState } from "react";
-import Popup from "../components/popup";
+import Popup from "../components/Popup";
 
 const addresses = [
   { name: "Home", details: "123 Main St, NY" },

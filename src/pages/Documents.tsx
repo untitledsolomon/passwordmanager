@@ -1,7 +1,7 @@
 import { PageLayout } from "../components/PageLayout";
 import { FileText, File as FileIcon, FileArchive, PlusIcon, ArrowRight } from "lucide-react";
 import { useState } from "react";
-import Popup from "../components/popup";
+import Popup from "../components/Popup";
 
 const documents = [
   { name: "Contract.pdf", type: "PDF", size: "1.2 MB" },
