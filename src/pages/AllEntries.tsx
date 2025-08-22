@@ -5,7 +5,8 @@ import { usePagination } from "../ts/usePagination";
 import Popup from "../components/Popup";
 import { useState } from "react";
 import { useToast } from "../components/ToastProvider";
-import { usePassowrds } from "../components/PasswordManager";
+import { usePassowrds, type PasswordEntry } from "../components/PasswordManager";
+import Form from "../components/Form"
 
 export default function AllEntries() {
   const {passwords, deletePassword} = usePassowrds();
@@ -15,6 +16,25 @@ export default function AllEntries() {
   const [selectedEntry, setSelectedEntry] = useState<any>(null);
   const [showPassword, setShowPassword] = useState(false);
   const { showToast } = useToast();
+  const [isAddOpen, setIsAddOpen] = useState(false);
+  const {addPassword} = usePassowrds();
+
+  const fields = [
+    { name: "name", label: "Website / App Name", type: "text", placeholder: "example.com"},
+    { name: "email", label: "Email / Username", type: "text"},
+    { name: "password", label: "Password", type: "password"},
+    { name: "notes", label: "Notes", type: "textarea"},
+  ];
+
+  const handleFormSubmit = (values: Record<string, string>) => {
+    const newEntry = {
+      id: Date.now(),
+      ...(values as Omit<PasswordEntry, "id">),
+      icon: "lock"
+    };
+    addPassword(newEntry)
+    setIsAddOpen(false)
+  }
 
   const handleRowClick = (entry: any) => {
     setSelectedEntry(entry);
@@ -38,6 +58,17 @@ export default function AllEntries() {
 
   return (
     <PageLayout title="All Entries">
+      <button
+        onClick={() => setIsAddOpen(true)}
+        className="px-6 py-2.5 bg-gradient-to-r from-red-500 to-red-600 text-white rounded-xl font-medium shadow-sm hover:from-red-600 hover:to-red-700 transition cursor-pointer"
+      >
+        Add Password
+      </button>
+
+      <Popup isOpen={isAddOpen} onClose={() => setIsAddOpen(false)}>
+        < Form title="Add Password" fields={fields} onSubmit={handleFormSubmit}/>
+      </Popup>
+
       {/* Entries Table */}
       <div className="bg-[#1E1F22]/80 backdrop-blur-md rounded-2xl shadow-md p-6 border border-white/10 mb-6">
         <ul className="w-full gap-7 border-separate border-spacing-y-3 text-left">
