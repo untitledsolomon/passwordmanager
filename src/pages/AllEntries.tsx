@@ -20,9 +20,9 @@ export default function AllEntries() {
   const {addPassword} = usePassowrds();
 
   const fields = [
-    { name: "name", label: "Website / App Name", type: "text", placeholder: "example.com"},
-    { name: "email", label: "Email / Username", type: "text"},
-    { name: "password", label: "Password", type: "password"},
+    { name: "name", label: "Website / App Name", type: "text", placeholder: "example.com", required: true},
+    { name: "email", label: "Email / Username", type: "text", required: true},
+    { name: "password", label: "Password", type: "password", required: true},
     { name: "notes", label: "Notes", type: "textarea"},
   ];
 
