@@ -1,16 +1,16 @@
 import { PageLayout } from "../components/PageLayout";
-import { Lock, Eye, EyeOff, Clipboard, SquareArrowOutUpRight, type LucideProps } from "lucide-react";
+import { Lock, Eye, EyeOff, Clipboard, SquareArrowOutUpRight, ChevronRight } from "lucide-react";
 import Pagination from "../components/Pagination";
 import { usePagination } from "../ts/usePagination";
 import Popup from "../components/Popup";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useToast } from "../components/ToastProvider";
 import { usePassowrds } from "../components/PasswordManager";
 
 export default function AllEntries() {
-  const {passwords, deletePassword, addPassword} = usePassowrds();
+  const {passwords, deletePassword} = usePassowrds();
   
-  const { currentItems, currentPage, totalPages, goToPage } = usePagination(passwords, 7);
+  const { currentItems, currentPage, totalPages, goToPage } = usePagination(passwords, 8);
   const [isOpen, setIsOpen] = useState(false);
   const [selectedEntry, setSelectedEntry] = useState<any>(null);
   const [showPassword, setShowPassword] = useState(false);
@@ -32,56 +32,35 @@ export default function AllEntries() {
     setIsOpen(false)
   }
 
-  const newEntry = {
-      id: Date.now(),
-      name: "example.com",
-      email: "Example password",
-      password: "thisIsAnExamplePassword",
-      notes: "this is an example note for an example password",
-      icon: "Lock"
-  };
-
   const iconMap: Record<string, React.ReactNode> = {
-    Lock: < Lock />
+    lock: < Lock />
   }
 
   return (
     <PageLayout title="All Entries">
       {/* Entries Table */}
       <div className="bg-[#1E1F22]/80 backdrop-blur-md rounded-2xl shadow-md p-6 border border-white/10 mb-6">
-        <button
-          onClick={() => addPassword(newEntry)}
-          className="px-6 py-2.5 bg-gradient-to-r from-red-500 to-red-600 text-white rounded-xl font-medium shadow-sm hover:from-red-600 hover:to-red-700 transition cursor-pointer"
-        >
-          Add Password
-        </button>
-
-        <table className="w-full border-separate border-spacing-y-3 text-left">
-          <thead>
-            <tr className="text-gray-400 uppercase text-xs tracking-wider">
-              <th className="px-6 py-2">Service</th>
-              <th className="px-6 py-2">Email</th>
-              <th className="px-6 py-2 text-center">Icon</th>
-            </tr>
-          </thead>
-          <tbody>
-            {currentItems.map((entry, idx) => (
-              <tr
-                key={idx}
-                className="bg-[#232427]/80 hover:bg-[#2A2B2F]/80 transition cursor-pointer rounded-2xl"
-                onClick={() => handleRowClick(entry)}
-              >
-                <td className="px-6 py-4 font-medium text-white">{entry.name}</td>
-                <td className="px-6 py-4 text-gray-400 truncate max-w-xs">{entry.email}</td>
-                <td className="px-6 py-4 flex justify-center">
+        <ul className="w-full gap-7 border-separate border-spacing-y-3 text-left">
+          {currentItems.map((entry) => (
+            <div
+              className="flex items-center bg-[#232427]/80 hover:bg-[#2A2B2F]/80 transition cursor-pointer rounded-2xl p-2 m-2 gap-5 justify-between"
+              onClick={() => handleRowClick(entry)}
+            >
+              <div className="flex items-centetr pl-3 ">
+                <div className="flex items-center">
                   <div className="w-10 h-10 rounded-xl bg-gradient-to-r from-red-500/20 to-indigo-500/20 flex items-center justify-center text-white shadow-md">
-                    {iconMap[entry.icon]}
+                      {iconMap[entry.icon]}
                   </div>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+                  <div className="px-6 py-4 font-medium text-white w-50">{entry.name}</div>
+                </div>
+                <div className="px-6 py-4 text-gray-400 truncate max-w-xs">{entry.email}</div>
+              </div>
+              <div className="justify-center mr-3 w-10 h-10 rounded-xl bg-gradient-to-r from-red-500/20 to-indigo-500/20 flex items-center text-white shadow-md hover:bg-red-900/60">
+                < ChevronRight />
+              </div> 
+            </div>
+          ))}
+        </ul>
       </div>
 
       {/* Pagination */}

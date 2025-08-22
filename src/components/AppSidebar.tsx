@@ -57,7 +57,7 @@ export default function Sidebar() {
         <div className="p-4 font-bold flex justify-between items-center border-b border-gray-800/50 text-white">
           {open && <span className="text-lg tracking-tight">Password Manager</span>}
           <button
-            className="text-gray-300 p-2 rounded-lg hover:bg-gray-700/40 transition"
+            className="text-gray-300 p-2 rounded-lg hover:bg-gray-700/40 transition cursor-pointer"
             onClick={() => setOpen(!open)}
           >
             {open ? <ChevronLeft /> : <ChevronRight />}
@@ -124,7 +124,7 @@ export default function Sidebar() {
       {!open && hoveredItem &&
         createPortal(
           <div
-            className="bg-[#1E1F22]/80 backdrop-blur-md text-white text-sm rounded-xl px-3 py-1 shadow-lg z-50 pointer-events-none transition-opacity opacity-100 border border-white/10"
+            className="bg-[#2C2D34] backdrop-blur-md text-white text-sm rounded-lg px-3 py-1 shadow-lg z-50 pointer-events-none transition-opacity opacity-100 border border-white/10"
             style={{
               position: "fixed",
               top: hoveredItem.top,

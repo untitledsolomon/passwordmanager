@@ -1,5 +1,6 @@
 // src/components/PageLayout.tsx
 import { Bell, Search } from "lucide-react";
+import { usePassowrds } from "./PasswordManager";
 
 interface PageLayoutProps {
   title: string;
@@ -7,6 +8,17 @@ interface PageLayoutProps {
 }
 
 export function PageLayout({ title, children }: PageLayoutProps) {
+  const {addPassword} = usePassowrds();
+
+  const newEntry = {
+      id: Date.now(),
+      name: "example.com",
+      email: "examplepassword@gmail.com",
+      password: "thisIsAnExamplePassword",
+      notes: "this is an example note for an example password",
+      icon: "lock"
+  };
+  
   return (
     <div className="flex flex-col h-full space-y-8 bg-gradient-to-br from-[#16171A] to-[#0F1012] text-white overflow-auto no-scrollbar">
       
@@ -17,6 +29,12 @@ export function PageLayout({ title, children }: PageLayoutProps) {
         </h1>
 
         <div className="flex gap-3 items-center w-full md:w-auto">
+          <button
+            onClick={() => addPassword(newEntry)}
+            className="px-6 py-2.5 bg-gradient-to-r from-red-500 to-red-600 text-white rounded-xl font-medium shadow-sm hover:from-red-600 hover:to-red-700 transition cursor-pointer"
+          >
+            Add Password
+          </button>
           <button className="bg-gradient-to-r from-red-500 to-red-700 px-5 py-2.5 rounded-xl 
                              hover:shadow-lg hover:shadow-red-600/30 transition 
                              font-semibold text-white text-sm md:text-base transform hover:scale-105">
