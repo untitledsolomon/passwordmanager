@@ -1,4 +1,4 @@
-import { Lock, CreditCard, File, MapPinHouseIcon, Key, ChevronRight, Eye, EyeOff, SquareArrowOutUpRight, Clipboard } from "lucide-react";
+import { Lock, File, Key, ChevronRight, Eye, EyeOff, SquareArrowOutUpRight, Clipboard } from "lucide-react";
 import { PageLayout } from "../components/PageLayout";
 import { useState } from "react";
 import Popup from "../components/Popup";
@@ -6,37 +6,9 @@ import { useToast } from "../components/ToastProvider";
 import { usePassowrds } from "../components/PasswordManager";
 import { usePagination } from "../ts/usePagination";
 import Pagination from "../components/Pagination";
+import { buildPasswordsMetrics } from "../utils/Metrics";
 
 export default function DashboardLayout() {
-  const metrics = [
-    { label: "Saved Passwords", value: 28, icon: <Lock className="w-5 h-5" />, accent: "from-red-500 to-indigo-500" },
-    { label: "Strong", value: 18, icon: <Key className="w-5 h-5" />, accent: "from-green-500 to-teal-500" },
-    { label: "Weak", value: 7, icon: <Lock className="w-5 h-5" />, accent: "from-yellow-400 to-orange-400" },
-    { label: "Duplicate", value: 3, icon: <File className="w-5 h-5" />, accent: "from-purple-500 to-pink-500" },
-  ];
-
-  const recentEntries = [
-    { name: "Spotify", email: "thisisatestemail@gmail.com", icon: <Lock /> },
-    { name: "Amazon", email: "user@example.com", icon: <CreditCard /> },
-    { name: "Netflix", email: "netflixuser@gmail.com", icon: <File /> },
-    { name: "Bank Account", email: "bankuser@gmail.com", icon: <MapPinHouseIcon /> },
-    { name: "Spotify", email: "thisisatestemail@gmail.com", icon: <Lock /> },
-    { name: "Amazon", email: "user@example.com", icon: <CreditCard /> },
-    { name: "Netflix", email: "netflixuser@gmail.com", icon: <File /> },
-    { name: "Bank Account", email: "bankuser@gmail.com", icon: <MapPinHouseIcon /> },
-    { name: "Spotify", email: "thisisatestemail@gmail.com", icon: <Lock /> },
-    { name: "Amazon", email: "user@example.com", icon: <CreditCard /> },
-    { name: "Netflix", email: "netflixuser@gmail.com", icon: <File /> },
-    { name: "Bank Account", email: "bankuser@gmail.com", icon: <MapPinHouseIcon /> },
-    { name: "Spotify", email: "thisisatestemail@gmail.com", icon: <Lock /> },
-    { name: "Amazon", email: "user@example.com", icon: <CreditCard /> },
-    { name: "Netflix", email: "netflixuser@gmail.com", icon: <File /> },
-    { name: "Bank Account", email: "bankuser@gmail.com", icon: <MapPinHouseIcon /> },
-    { name: "Spotify", email: "thisisatestemail@gmail.com", icon: <Lock /> },
-    { name: "Amazon", email: "user@example.com", icon: <CreditCard /> },
-    { name: "Netflix", email: "netflixuser@gmail.com", icon: <File /> },
-    { name: "Bank Account", email: "bankuser@gmail.com", icon: <MapPinHouseIcon /> },
-  ];
 
   const quickActions = [
     { name: "Add Password", icon: <Lock /> },
@@ -47,7 +19,8 @@ export default function DashboardLayout() {
 
   const {passwords, deletePassword} = usePassowrds();
 
-  const sorted = passwords.sort((a, b) => b.id - a.id);
+  const metrics = buildPasswordsMetrics(passwords)
+
 
   const days = 1;
   const cutoff = Date.now() - days * 24 * 60 * 60 * 1000
@@ -64,7 +37,6 @@ export default function DashboardLayout() {
   const iconMap: Record<string, React.ReactNode> = {
     lock: < Lock />
   }
-
 
   const handleRowClick = (entry: any) => {
     setSelectedEntry(entry);
@@ -96,7 +68,7 @@ export default function DashboardLayout() {
                          hover:shadow-2xl hover:scale-[1.03] transition hover:border-indigo-400/30"
             >
               <div className={`w-12 h-12 rounded-xl bg-gradient-to-r ${m.accent} flex items-center justify-center text-white shadow-md`}>
-                {m.icon}
+                <m.icon className="w-5 h-5"/>
               </div>
               <div className="text-xl font-semibold text-white">{m.value}</div>
               <div className="text-gray-400 text-sm">{m.label}</div>
