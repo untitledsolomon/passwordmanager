@@ -57,14 +57,7 @@ export default function AllEntries() {
   }
 
   return (
-    <PageLayout title="All Entries">
-      <button
-        onClick={() => setIsAddOpen(true)}
-        className="px-6 py-2.5 bg-gradient-to-r from-red-500 to-red-600 text-white rounded-xl font-medium shadow-sm hover:from-red-600 hover:to-red-700 transition cursor-pointer"
-      >
-        Add Password
-      </button>
-
+    <PageLayout title="All Entries" onAdd={() => setIsAddOpen(true)}>
       <Popup isOpen={isAddOpen} onClose={() => setIsAddOpen(false)}>
         < Form title="Add Password" fields={fields} onSubmit={handleFormSubmit}/>
       </Popup>
@@ -77,14 +70,14 @@ export default function AllEntries() {
               className="flex items-center bg-[#232427]/80 hover:bg-[#2A2B2F]/80 transition cursor-pointer rounded-2xl p-2 m-2 gap-5 justify-between"
               onClick={() => handleRowClick(entry)}
             >
-              <div className="flex items-centetr pl-3 ">
-                <div className="flex items-center">
+              <div className="flex items-centetr pl-3">
+                <div className="flex items-center overflow">
                   <div className="w-10 h-10 rounded-xl bg-gradient-to-r from-red-500/20 to-indigo-500/20 flex items-center justify-center text-white shadow-md">
                       {iconMap[entry.icon]}
                   </div>
-                  <div className="px-6 py-4 font-medium text-white w-50">{entry.name}</div>
+                  <div className="px-6 py-4 font-medium text-white w-50 whitespace-nowrap text-ellipsis overflow-hidden">{entry.name}</div>
                 </div>
-                <div className="px-6 py-4 text-gray-400 truncate max-w-xs">{entry.email}</div>
+                <div className="px-6 py-4 text-gray-400 truncate">{entry.email}</div>
               </div>
               <div className="justify-center mr-3 w-10 h-10 rounded-xl bg-gradient-to-r from-red-500/20 to-indigo-500/20 flex items-center text-white shadow-md hover:bg-red-900/60">
                 < ChevronRight />
@@ -103,7 +96,7 @@ export default function AllEntries() {
           <div className="w-11/12 max-w-[850px] h-[60vh] mx-auto p-2 flex flex-col justify-between space-y-6">
             
             {/* Header */}
-            <div className="flex justify-between items-center border-b border-gray-800 pb-4">
+            <div className="flex justify-between items-center border-b border-red-500/20 pb-4">
               <div className="flex gap-4 items-center">
                 <div className="w-16 h-16 rounded-xl bg-gradient-to-r from-red-500/20 to-indigo-500/20 flex items-center justify-center text-white shadow-md">
                   {iconMap[selectedEntry.icon]}
