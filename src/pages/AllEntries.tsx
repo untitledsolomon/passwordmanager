@@ -75,7 +75,7 @@ export default function AllEntries() {
                   <div className="w-10 h-10 rounded-xl bg-gradient-to-r from-red-500/20 to-indigo-500/20 flex items-center justify-center text-white shadow-md">
                       {iconMap[entry.icon]}
                   </div>
-                  <div className="px-6 py-4 font-medium text-white w-50 whitespace-nowrap text-ellipsis overflow-hidden">{entry.name}</div>
+                  <div className="px-6 py-4 font-medium text-white w-60 whitespace-nowrap text-ellipsis overflow-hidden">{entry.name}</div>
                 </div>
                 <div className="px-6 py-4 text-gray-400 truncate">{entry.email}</div>
               </div>

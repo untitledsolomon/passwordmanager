@@ -4,6 +4,8 @@ import { useState } from "react";
 import Popup from "../components/Popup";
 import { useToast } from "../components/ToastProvider";
 import { usePassowrds } from "../components/PasswordManager";
+import { usePagination } from "../ts/usePagination";
+import Pagination from "../components/Pagination";
 
 export default function DashboardLayout() {
   const metrics = [
@@ -18,6 +20,22 @@ export default function DashboardLayout() {
     { name: "Amazon", email: "user@example.com", icon: <CreditCard /> },
     { name: "Netflix", email: "netflixuser@gmail.com", icon: <File /> },
     { name: "Bank Account", email: "bankuser@gmail.com", icon: <MapPinHouseIcon /> },
+    { name: "Spotify", email: "thisisatestemail@gmail.com", icon: <Lock /> },
+    { name: "Amazon", email: "user@example.com", icon: <CreditCard /> },
+    { name: "Netflix", email: "netflixuser@gmail.com", icon: <File /> },
+    { name: "Bank Account", email: "bankuser@gmail.com", icon: <MapPinHouseIcon /> },
+    { name: "Spotify", email: "thisisatestemail@gmail.com", icon: <Lock /> },
+    { name: "Amazon", email: "user@example.com", icon: <CreditCard /> },
+    { name: "Netflix", email: "netflixuser@gmail.com", icon: <File /> },
+    { name: "Bank Account", email: "bankuser@gmail.com", icon: <MapPinHouseIcon /> },
+    { name: "Spotify", email: "thisisatestemail@gmail.com", icon: <Lock /> },
+    { name: "Amazon", email: "user@example.com", icon: <CreditCard /> },
+    { name: "Netflix", email: "netflixuser@gmail.com", icon: <File /> },
+    { name: "Bank Account", email: "bankuser@gmail.com", icon: <MapPinHouseIcon /> },
+    { name: "Spotify", email: "thisisatestemail@gmail.com", icon: <Lock /> },
+    { name: "Amazon", email: "user@example.com", icon: <CreditCard /> },
+    { name: "Netflix", email: "netflixuser@gmail.com", icon: <File /> },
+    { name: "Bank Account", email: "bankuser@gmail.com", icon: <MapPinHouseIcon /> },
   ];
 
   const quickActions = [
@@ -27,13 +45,26 @@ export default function DashboardLayout() {
     { name: "Duplicate Finder", icon: <File /> },
   ];
 
+  const {passwords, deletePassword} = usePassowrds();
+
+  const sorted = passwords.sort((a, b) => b.id - a.id);
+
+  const days = 1;
+  const cutoff = Date.now() - days * 24 * 60 * 60 * 1000
+  const recent = passwords.filter(password => password.id >= cutoff)
+
+  const { currentItems, currentPage, totalPages, goToPage } = usePagination(recent, 4)
 
   const [isOpen, setIsOpen] = useState(false);
   const [selectedEntry, setSelectedEntry] = useState<any>(null);
-  const {deletePassword} = usePassowrds();
 
   const [showPassword, setShowPassword] = useState(false);
   const { showToast } = useToast();
+
+  const iconMap: Record<string, React.ReactNode> = {
+    lock: < Lock />
+  }
+
 
   const handleRowClick = (entry: any) => {
     setSelectedEntry(entry);
@@ -53,7 +84,7 @@ export default function DashboardLayout() {
 
   return (
     <PageLayout title="Dashboard">
-      <main className="flex-1 p-6 space-y-10">
+      <main className="flex-1 p-2 space-y-10">
 
         {/* Metrics */}
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-6">
@@ -74,10 +105,10 @@ export default function DashboardLayout() {
         </div>
 
         {/* Recent Entries */}
-        <div className="bg-[#1E1F22]/80 backdrop-blur-md rounded-2xl shadow-lg p-6 border border-white/10">
+        <div className="bg-[#1E1F22]/80 backdrop-blur-md rounded-2xl shadow-lg p-6 border border-white/10 h-[29-rem]">
           <h2 className="text-white font-semibold text-xl mb-4">Recent Entries</h2>
           <ul className="w-full gap-7 border-separate border-spacing-y-3 text-left">
-            {recentEntries.map((entry) => (
+            {currentItems.map((entry) => (
               <div
                 className="flex items-center bg-[#232427]/80 hover:bg-[#2A2B2F]/80 transition cursor-pointer rounded-2xl p-2 m-2 gap-5 justify-between"
                 onClick={() => handleRowClick(entry)}
@@ -85,11 +116,11 @@ export default function DashboardLayout() {
                 <div className="flex items-centetr pl-3">
                   <div className="flex items-center">
                     <div className="w-10 h-10 rounded-xl bg-gradient-to-r from-red-500/20 to-indigo-500/20 flex items-center justify-center text-white shadow-md">
-                        {entry.icon}
+                        {iconMap[entry.icon]}
                     </div>
-                    <div className="px-6 py-4 font-medium text-white w-50">{entry.name}</div>
+                    <div className="px-6 py-4 font-medium text-white w-60 whitespace-nowrap text-ellipsis overflow-hidden">{entry.name}</div>
                   </div>
-                  <div className="px-6 py-4 text-gray-400 truncate max-w-xs">{entry.email}</div>
+                  <div className="px-6 py-4 text-gray-400 truncate">{entry.email}</div>
                 </div>
                 <div className="justify-center mr-3 w-10 h-10 rounded-xl bg-gradient-to-r from-red-500/20 to-indigo-500/20 flex items-center text-white shadow-md hover:bg-red-900/60">
                   < ChevronRight />
@@ -97,6 +128,7 @@ export default function DashboardLayout() {
               </div>
             ))}
           </ul>
+          <Pagination currentPage={currentPage} totalPages={totalPages} goToPage={goToPage} />
         </div>
 
         {/* Quick Actions */}
@@ -122,7 +154,7 @@ export default function DashboardLayout() {
               <div className="flex justify-between items-center border-b border-gray-800 pb-4">
                 <div className="flex gap-4 items-center">
                   <div className="w-16 h-16 rounded-xl bg-gradient-to-r from-red-500/20 to-indigo-500/20 flex items-center justify-center text-white shadow-md">
-                    {selectedEntry.icon}
+                    {iconMap[selectedEntry.icon]}
                   </div>
                   <h2 className="text-2xl font-bold text-white truncate">{selectedEntry.name}</h2>
                 </div>
